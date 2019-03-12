@@ -35,11 +35,13 @@ public class GameOfLife extends JFrame {
 class Panel extends JPanel implements Runnable {
 
     private int[][] grid;
+    private boolean running;
 
     Panel() {
     
         setFocusable(true);
         grid = new int[30][30];
+        running = true;
         
         addKeyListener(new Keyboard(this));
         
@@ -68,15 +70,20 @@ class Panel extends JPanel implements Runnable {
     public void run() {
     
         while (true) {
-        
+      
             try {
             
                 Thread.sleep(500);
-                next();
-                repaint();
+                
+                if (running) {
+                
+                    next();
+                    repaint();
+                    
+                }
             
             } catch (Exception e) {}
-        
+            
         }
     
     }
@@ -159,6 +166,18 @@ class Panel extends JPanel implements Runnable {
         }
     
     }
+    
+    public void setRunning(boolean r) {
+    
+        running = r;
+    
+    }
+    
+    public boolean getRunning() {
+    
+        return running;
+    
+    }
 
 }
 
@@ -180,6 +199,10 @@ class Keyboard extends KeyAdapter {
         
             case 'R':
                 panel.createGrid();
+                break;
+                
+            case ' ':
+                panel.setRunning(!panel.getRunning());
                 break;
         
         }
