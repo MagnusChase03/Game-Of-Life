@@ -35,13 +35,11 @@ public class GameOfLife extends JFrame {
 class Panel extends JPanel implements Runnable {
 
     private int[][] grid;
-    private int speed;
 
     Panel() {
     
         setFocusable(true);
-        grid = new int[60][60];
-        speed = 500;
+        grid = new int[30][30];
         
         addKeyListener(new Keyboard(this));
         
@@ -49,7 +47,7 @@ class Panel extends JPanel implements Runnable {
     
     }
     
-    private void createGrid() {
+    public void createGrid() {
     
         for (int i = 0; i < grid.length; i++) {
         
@@ -73,7 +71,7 @@ class Panel extends JPanel implements Runnable {
         
             try {
             
-                Thread.sleep(speed);
+                Thread.sleep(500);
                 next();
                 repaint();
             
@@ -141,30 +139,19 @@ class Panel extends JPanel implements Runnable {
         grid = nextGen;
            
     }
-    
-    public void setSpeed(int s) {
-    
-        speed = s;
-    
-    }
-    
-    public int getSpeed() {
-    
-        return speed;
-    
-    }
 
     public void paint(Graphics g) {
     
         g.setColor(Color.BLACK);
-        g.clearRect(0, 0, 600, 630);
+        g.fillRect(0, 0, 600, 630);
         for (int i = 0; i < grid.length; i++) {
         
             for (int j = 0; j < grid[i].length; j++) {
             
                 if (grid[i][j] == 1) {
                     
-                    g.fillRect(i * 10, j * 10, 10, 10);
+                    g.setColor(new Color(0, (int) (Math.random() * 171 + 30), (int) (Math.random() * 171 + 30)));
+                    g.fillRect(i * 20, j * 20, 20, 20);
                 }
             
             }
@@ -191,14 +178,8 @@ class Keyboard extends KeyAdapter {
 
         switch (key) {
         
-            case 'W':
-                panel.setSpeed(panel.getSpeed() - 100 <= 0 ? 1 : panel.getSpeed() - 100);
-                System.out.println(panel.getSpeed());
-                break;
-                
-            case 'S':
-                panel.setSpeed(panel.getSpeed() + 100);
-                System.out.println(panel.getSpeed());
+            case 'R':
+                panel.createGrid();
                 break;
         
         }
