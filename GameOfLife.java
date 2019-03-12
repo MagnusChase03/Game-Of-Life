@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class GameOfLife extends JFrame {
 
@@ -34,10 +35,16 @@ public class GameOfLife extends JFrame {
 class Panel extends JPanel implements Runnable {
 
     private int[][] grid;
+    private int speed;
 
     Panel() {
     
+        setFocusable(true);
         grid = new int[60][60];
+        speed = 500;
+        
+        addKeyListener(new Keyboard(this));
+        
         createGrid();
     
     }
@@ -66,7 +73,7 @@ class Panel extends JPanel implements Runnable {
         
             try {
             
-                Thread.sleep(1000);
+                Thread.sleep(speed);
                 next();
                 repaint();
             
@@ -134,6 +141,18 @@ class Panel extends JPanel implements Runnable {
         grid = nextGen;
            
     }
+    
+    public void setSpeed(int s) {
+    
+        speed = s;
+    
+    }
+    
+    public int getSpeed() {
+    
+        return speed;
+    
+    }
 
     public void paint(Graphics g) {
     
@@ -150,6 +169,38 @@ class Panel extends JPanel implements Runnable {
             
             }
             
+        }
+    
+    }
+
+}
+
+class Keyboard extends KeyAdapter {
+
+    private Panel panel;
+
+    Keyboard(Panel p) {
+    
+        panel = p;
+    
+    }
+    
+    public void keyPressed(KeyEvent e) {
+    
+        char key = (char) e.getKeyCode();
+
+        switch (key) {
+        
+            case 'W':
+                panel.setSpeed(panel.getSpeed() - 100 <= 0 ? 1 : panel.getSpeed() - 100);
+                System.out.println(panel.getSpeed());
+                break;
+                
+            case 'S':
+                panel.setSpeed(panel.getSpeed() + 100);
+                System.out.println(panel.getSpeed());
+                break;
+        
         }
     
     }
